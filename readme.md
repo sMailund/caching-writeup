@@ -2,6 +2,23 @@
 ```sh
 dotnet restore; dotnet build;
 ``` 
+
+# prerequesites for å kjøre tester med RedisCache for istedenfor MemoryDistributedCache
+
+## med docker 
+(må ofte kjøres som priviligert bruker)
+```sh
+docker pull docker.io/redis
+docker run -p 6379:6379 redis
+``` 
+
+## med podman 
+podman kan kjøre uten priviligert bruker ;)
+```sh
+podman pull docker.io/redis
+podman run -p 6379:6379 redis
+``` 
+
 # `IMemoryCache` vs `IDistributedCache`
 
 I sammenheng med en teknisk diskusjon var hoveduenigheten om hvordan cachede objekter håndteres i dotnet.
