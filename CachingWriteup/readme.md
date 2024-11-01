@@ -1,3 +1,7 @@
+# prerequesites for å kjøre testkode
+```sh
+dotnet restore; dotnet build;
+``` 
 # `IMemoryCache` vs `IDistributedCache`
 
 I sammenheng med en teknisk diskusjon var hoveduenigheten om hvordan cachede objekter håndteres i dotnet
@@ -39,6 +43,14 @@ referanser til objekter i minne uten serialisering.
 For at dette skal være mulig må cachet ligge i et minneområdet dotnet runtimen har tilgang på, 
 så det finnes ikke noe implementasjon av dette biblioteket for redis.
 
+Som eksempel finnes testfil: `CachingWriteup/MemoryCacheTests.cs`
+
+Kjør tester med 
+```sh
+dotnet test --filter DistributedCacheTests
+````
+eller gjennom editor.
+
 ### `IDistributedCache`
 [IDistributedCache](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.caching.distributed.idistributedcache?view=net-8.0) 
 representerer et cache som *kan* være distribuert, 
@@ -46,7 +58,20 @@ dvs at verdiene kan måtte hentes utenfor kontrollsfæren til programmet (f.eks.
 På grunn av dette kan man ikke returnere en minnreferanse, og 
 [alle tilgjengelige metoder](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.caching.distributed.idistributedcache?view=net-8.0#methods)
 bruker byte-arrays eller strings for å overføre verdier fra og til cachet.
+Dette gir også mening, siden dotnetprogrammet ikke har direkte tilgang på minneområdet til et distribuert cache.
 Her finnes det implementasjoner for både in-memory og redis (blant annet).
 
 Når man leser en verdi fra cachet får du bare en kopi av verdien som ligger der, 
 og alle endringer på verdien som ble hentet fra cachet blir ikke oppdatert i cachet uten at man aktivt skriver det tilbake.
+
+Som eksempel finnes testfil: `CachingWriteup/DistributedCacheTests.cs`
+
+Kjør tester med
+```sh
+dotnet test --filter MemoryCacheTests
+````
+eller gjennom editor.
+
+# konklusjon
+Det er mulig å få tilbake en referanse til en minneadresse som kan deles på tvers av programmet, men bare med `IMemoryCache`.
+Siden vi trenger `IDistributedCache` for å bruke redis som cache, er det ikke mulig i vår sammenheng.
