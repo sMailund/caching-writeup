@@ -73,4 +73,32 @@ public class DistributedCacheTests
         Assert.Equal(copyAfterChange.Value, copy1.Value);
     }
     
+    // ekstra eksempel uten serialisering bare for good measure
+    [Fact]
+    public void DistributedMemoryCacheTestWithoutSerialization()
+    {
+        var cacheKey = Guid.NewGuid().ToString();
+
+        var inMemoryDistributedCacheOptions = Options.Create(new MemoryDistributedCacheOptions());
+        var redisDistributedCacheOptions = new RedisCacheOptions
+        {
+            Configuration = "localhost:6379",
+        };
+
+        IDistributedCache myCache =
+            UseRedis
+                ? new RedisCache(redisDistributedCacheOptions)
+                : new MemoryDistributedCache(inMemoryDistributedCacheOptions);
+
+        myCache.SetString(cacheKey, "test value please ignore");
+
+        var get1 = myCache.GetString(cacheKey)!;
+
+        var get2 = myCache.GetString(cacheKey)!;
+
+        get2 = "another value which is not the same";
+
+        // og her kan vi sjekke at verdiene ikke er like etter vi endra i den første kopien
+        Assert.NotEqual(get1, get2);
+    }
 }
