@@ -19,6 +19,13 @@ podman pull docker.io/redis
 podman run -p 6379:6379 redis
 ``` 
 
+## med valkey i podman 
+hvis man vil være ekstra kul :sunglasses: 
+```sh
+podman pull docker.io/valkey/valkey
+podman run -p 6379:6379 valkey
+``` 
+
 # `IMemoryCache` vs `IDistributedCache`
 
 I sammenheng med en teknisk diskusjon var hoveduenigheten om hvordan cachede objekter håndteres i dotnet.
