@@ -4,7 +4,7 @@ dotnet restore; dotnet build;
 ``` 
 # `IMemoryCache` vs `IDistributedCache`
 
-I sammenheng med en teknisk diskusjon var hoveduenigheten om hvordan cachede objekter håndteres i dotnet
+I sammenheng med en teknisk diskusjon var hoveduenigheten om hvordan cachede objekter håndteres i dotnet.
 Etter litt graving viser det seg at begge perspektivene er riktige avhengig av kontekst.
 
 ## Blir endringer i et cachet objekt reflektert hos alle kopier
